@@ -11,16 +11,16 @@ export class User{
     @prop({required: true})
     public password:string;
 
-    @prop({required: true, unique:true})
+    @prop({required: true})
     public nickname:string;
 
     @prop()
     public joinDate:string;
     
-    // nickname으로 user 찾기
-    public static async findByNickname(nickname:string): Promise<User|null>{
-        const userdata: User|null = await UserModel.findOne({nickname:nickname}).exec(); //find 한번에 여러개 찾을때, findOne 사용
-        console.log(nickname,' 조회 완료');
+    // userEmail user 찾기
+    public static async findByUserEmail(userEmail:string): Promise<User|null>{
+        const userdata: User|null = await UserModel.findOne({userEmail:userEmail}).exec(); //find 한번에 여러개 찾을때, findOne 사용
+        console.log(userEmail,' 조회 완료');
         return userdata;
     }
     // user 추가
@@ -33,9 +33,9 @@ export class User{
         await UserModel.updateOne({ userEmail }, { password, nickname});
         console.log(userEmail,'수정 완료');
     }
-    public static async deleteByNickname(nickname: string): Promise<void>{
-        await UserModel.deleteOne({nickname: nickname});
-        console.log(nickname,' 삭제 완료');
+    public static async deleteUser(userEmail: string): Promise<void>{
+        await UserModel.deleteOne({userEmail: userEmail});
+        console.log(userEmail,' 삭제 완료');
     }
     
 }

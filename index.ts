@@ -6,12 +6,16 @@ import userRouter from './src/controllers/user';
 const app = express()
 const port = 3000
 
-declare module "express-session" {
-  export interface SessionData {
-      user?: any,
-    is_logined?: boolean;
-    dispayName?: string;
-    userId?: number;
+
+
+declare module 'express-session' {
+  interface SessionData {
+    user?: {
+      userEmail: string;
+      nickname: string;
+      loginTime: string;
+      authorized: boolean;
+    };
   }
 }
 
@@ -23,7 +27,6 @@ app.use(session({
   saveUninitialized: true,
   cookie: { secure: false }
 }))
-
 app.use('/user', userRouter);
 
 
