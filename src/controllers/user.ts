@@ -71,8 +71,7 @@ router.post('/session/login',async(req:Request,res:Response)=>{
                 authorized: true,
             };
             console.log(userEmail,' 로그인');
-            console.log(req.session.user.userEmail);
-            res.status(201).json({ session:req.session.user });
+            res.status(200).json({ session:req.session.user });
         }else{
             res.status(400).json({ message: '비밀번호를 다시 확인해주세요.' });
         }
@@ -82,10 +81,10 @@ router.post('/session/login',async(req:Request,res:Response)=>{
     }
 });
 // 세션 로그아웃
-router.get('/session/logout',(req:Request,res:Response)=>{
+router.get('/session/logout',async(req:Request,res:Response)=>{
     try{
-        req.session.destroy(()=>{
-            const userEmail = req.session?.user?.userEmail;
+        const userEmail = req.session?.user?.userEmail;
+        await req.session.destroy(()=>{
             console.log(userEmail,' 로그아웃');
             res.status(200).json({ message:`${userEmail} 로그아웃` });
         });
@@ -93,10 +92,7 @@ router.get('/session/logout',(req:Request,res:Response)=>{
         console.error('session logout error:', error);
         res.status(500).json({ message: '로그아웃 오류' });
     }
-})
-
-
-
+});
 
 
 
