@@ -43,3 +43,14 @@ yarn add @types/express-session
 npm install bcrypt
 yarn add install bcrypt
 ```
+## jwt
+```bash
+npm install jsonwebtoken
+npm install @types/jsonwebtoken
+
+yarn add jsonwebtoken
+yarn add @types/jsonwebtoken
+
+# npm install --save-dev @types/jsonwebtoken
+# npm install --save-dev @types/jsonwebtoken
+```
