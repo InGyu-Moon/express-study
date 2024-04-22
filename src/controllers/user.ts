@@ -1,11 +1,8 @@
-import express, { Request, Response } from 'express';
-import { CustomRequest } from '../types/types';
+import express, { Request, Response, response } from 'express';
 import { UserModel,User } from '../models/user';
-import { userDataValidator, verifyToken } from '../middleware/userVaildator';
-import jwt from 'jsonwebtoken'
 
 const router = express.Router();
-
+const { userDataValidator, anotherMiddleware } = require('../middleware/userVaildator');
 const bcrypt = require('bcrypt');
 
 // 'user'가 아니라 '/' 로 설정해야한다.
@@ -96,51 +93,43 @@ router.get('/session/logout',async(req:Request,res:Response)=>{
         res.status(500).json({ message: '로그아웃 오류' });
     }
 });
-// jwt 로그인
-router.post('/jwt/login',async(req:Request,res:Response)=>{
-    try{
-        const {userEmail,password} = req.body;
-        const userdata:User|null = await UserModel.findByUserEmail(userEmail);
 
-        //존재하지 않는 사용자
-        if (!userdata) {
-            return res.status(400).json({ message: '이메일을 다시 확인해주세요.' });
-        }
-        const passwordMatch = await bcrypt.compare(password,userdata.password);
-        if(passwordMatch){
-            const token = jwt.sign({
-                userEmail: userdata.userEmail,
-                nickname: userdata.nickname,
-                loginTime: new Date().toISOString()                
-            }, 'secret', { expiresIn: '30m' });
-            console.log(userEmail,' 로그인');
-            res.status(200).json({
-                message: `${userEmail}`+'로그인',
-                token: token
-            });
-        }else{
-            res.status(400).json({ message: '비밀번호를 다시 확인해주세요.' });
+router.get('/test/get',async(req:Request,res:Response)=>{
+    try{
+        const response = await fetch('https://jsonplaceholder.typicode.com/users',{
+            method:"GET",
+        })
+        if(response.ok){
+            const data = await response.json();
+            console.log(data);
+            res.status(200).json({data:data});
         }
     }catch(error){
-        console.error('jwt login error :', error);
-        res.status(500).json({ message: '로그인 오류' });
+        console.log(error);
     }
 })
-// jwt check
-router.get("/jwt/payload", verifyToken, (req:CustomRequest,res:Response) => {
-    const decode = req.decode
-    return res.status(200).json({
-      code: 200,
-      message: "토큰이 정상입니다.",
-      data: {
-        userEmail: decode.userEmail,
-        nickname: decode.nickname,
-        loginTime: decode.loginTime
-      },
-    });
-});
-
-
+router.post('/test/post',async(req:Request,res:Response)=>{
+    try{
+        const response = await fetch('https://jsonplaceholder.typicode.com/posts',{
+            method:"POST",
+            body:JSON.stringify({
+                title:"foo",
+                body:"bar",
+                userId:1,
+            }),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            },
+        })
+        if(response.ok){
+            const data = await response.json();
+            console.log(data);
+            res.status(200).json({data:data});
+        }
+    }catch(error){
+        console.log(error);
+    }
+})
 
 
 export default router;
