@@ -1,4 +1,4 @@
-import express, { Request, Response } from 'express';
+import express, { Request, Response, response } from 'express';
 import { UserModel,User } from '../models/user';
 
 const router = express.Router();
@@ -94,6 +94,42 @@ router.get('/session/logout',async(req:Request,res:Response)=>{
     }
 });
 
+router.get('/test/get',async(req:Request,res:Response)=>{
+    try{
+        const response = await fetch('https://jsonplaceholder.typicode.com/users',{
+            method:"GET",
+        })
+        if(response.ok){
+            const data = await response.json();
+            console.log(data);
+            res.status(200).json({data:data});
+        }
+    }catch(error){
+        console.log(error);
+    }
+})
+router.post('/test/post',async(req:Request,res:Response)=>{
+    try{
+        const response = await fetch('https://jsonplaceholder.typicode.com/posts',{
+            method:"POST",
+            body:JSON.stringify({
+                title:"foo",
+                body:"bar",
+                userId:1,
+            }),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            },
+        })
+        if(response.ok){
+            const data = await response.json();
+            console.log(data);
+            res.status(200).json({data:data});
+        }
+    }catch(error){
+        console.log(error);
+    }
+})
 
 
 export default router;
