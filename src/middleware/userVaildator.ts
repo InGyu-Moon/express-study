@@ -19,6 +19,7 @@ const verifyToken = (req:CustomRequest,res:Response, next:NextFunction)=>{
     }
     jwt.verify(token, 'secret', function(err:Error, decode:TokenPayload) {
         if(err){
+            console.log(err);
             return res.status(400).json({message:'토큰 오류'});
         }
         req.decode = decode;
