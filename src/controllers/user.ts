@@ -8,6 +8,11 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 
 // 'user'가 아니라 '/' 로 설정해야한다.
+
+// TODO
+// 모든 user 정보 가저오는 api
+
+
 router.get('/:userEmail',async(req:Request,res:Response)=>{
     try{
         const userEmail:string = req.params.userEmail;
