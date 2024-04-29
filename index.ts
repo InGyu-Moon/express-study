@@ -6,6 +6,16 @@ import userRouter from './src/controllers/user';
 const app = express()
 const port = 3000
 
+
+const cors = require('cors');
+app.use(cors())
+
+// const corsOptions = {
+//   origin: 'http://localhost:3001/',
+// };
+// app.use(cors(corsOptions));
+
+
 //jsx가 뭔지
 // cors 에러 해결하기
 

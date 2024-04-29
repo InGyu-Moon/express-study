@@ -54,3 +54,8 @@ yarn add @types/jsonwebtoken
 # npm install --save-dev @types/jsonwebtoken
 # npm install --save-dev @types/jsonwebtoken
 ```
+## cors
+```
+npm install cors
+npm install --save @types/cors
+```
