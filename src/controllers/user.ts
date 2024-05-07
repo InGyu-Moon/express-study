@@ -18,6 +18,16 @@ router.get('/:userEmail',async(req:Request,res:Response)=>{
         res.status(500).json({ message: '데이터 조회 실패' });
     }
 })
+// 전체 회원 조회
+router.get('/',async(req:Request,res:Response)=>{
+    try{
+        const allUser: User[] = await UserModel.getAllUsers();
+        res.status(200).json({ data:allUser ,message: '데이터 조회 성공' });
+    }catch(error){
+        console.error('Error creating user:', error);
+        res.status(500).json({ message: '데이터 조회 실패' });
+    }
+})
 //회원가입
 router.post('/', userDataValidator, async (req: Request, res: Response) => {
     try {

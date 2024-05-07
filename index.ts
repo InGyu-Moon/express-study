@@ -6,8 +6,8 @@ import userRouter from './src/controllers/user';
 const app = express()
 const port = 3000
 
-
-const cors = require('cors');
+import cors from 'cors';
+// const cors = require('cors');
 app.use(cors())
 
 // const corsOptions = {
