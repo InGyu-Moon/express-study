@@ -42,6 +42,10 @@ export class User{
         await UserModel.deleteOne({userEmail: userEmail});
         console.log(userEmail,' 삭제 완료');
     }
+    //전체 user 목록 
+    public static async getAllUsers():Promise<User[]>{
+        return await UserModel.find({});
+    }
     
 }
 
