@@ -23,6 +23,11 @@ export class User{
         console.log(userEmail,' 조회 완료');
         return userdata;
     }
+
+    public static async findAllUser(): Promise<User[]>{
+        return await UserModel.find();
+    }
+
     // user 추가
     public static async saveUser(userEmail: string, password: string, nickname: string): Promise<void> {
         await UserModel.create({ userEmail: userEmail, password: password, nickname:nickname, joinDate:new Date().toISOString() });
