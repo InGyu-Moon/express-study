@@ -59,8 +59,8 @@ router.put('/',async(req:Request,res:Response)=>{
 //user 삭제
 router.delete('/',async(req:Request,res:Response)=>{
     try{
-        const {nickname} = req.body;
-        await UserModel.deleteUser(nickname);
+        const {userEmail} = req.body;
+        await UserModel.deleteUser(userEmail);
         res.status(200).json({ message: '데이터 삭제 성공' });
     }catch(error){
         console.error('Error deleting user:', error);
