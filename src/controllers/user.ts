@@ -49,7 +49,8 @@ router.post('/', userDataValidator, async (req: Request, res: Response) => {
 router.put('/',async(req:Request,res:Response)=>{
     try{
         const { userEmail, password, nickname } = req.body;
-        await UserModel.updateUser(userEmail,password,nickname);
+        const hashedPassword = await bcrypt.hash(password, 10);
+        await UserModel.updateUser(userEmail,hashedPassword,nickname);
         res.status(201).json({ message: '데이터 수정 성공' });
     }catch(error){
         console.error('Error updating user:', error);
