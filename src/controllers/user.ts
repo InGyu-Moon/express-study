@@ -192,5 +192,25 @@ router.post('/test/post',async(req:Request,res:Response)=>{
     }
 })
 
+//비밀번호 확인
+router.post('/check/:userEmail',async(req:Request,res:Response)=>{
+    try{
+        const userEmail:string = req.params.userEmail;
+        const {password} = req.body;
+
+        const userdata:User|null = await UserModel.findByUserEmail(userEmail);
+
+        const passwordMatch = await bcrypt.compare(password,userdata.password);
+        if(passwordMatch){
+            res.status(200).json({ check:true, message: '비밀번호 확인 성공' });
+        }else{
+            res.status(400).json({ check:false, message: '비밀번호를 다시 확인해주세요.' });
+        }
+    }catch(error){
+        console.error('Error checking password:', error);
+        res.status(500).json({ message: '비밀번호 확인 실패' });
+    }
+});
+
 
 export default router;
