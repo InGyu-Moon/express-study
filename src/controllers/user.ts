@@ -24,7 +24,7 @@ router.get('/:userEmail',async(req:Request,res:Response)=>{
     }
 })
 // 전체 회원 조회
-router.get('/',async(req:Request,res:Response)=>{
+router.get('/',verifyToken,async(req:Request,res:Response)=>{
     try{
         const userdata: User[] = await UserModel.findAllUser();
         res.status(200).json({ data:userdata ,message: '데이터 조회 성공' });
@@ -46,7 +46,7 @@ router.post('/', userDataValidator, async (req: Request, res: Response) => {
     }
 });
 //user 수정
-router.put('/',async(req:Request,res:Response)=>{
+router.put('/',verifyToken,async(req:Request,res:Response)=>{
     try{
         const { userEmail, password, nickname } = req.body;
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -58,7 +58,7 @@ router.put('/',async(req:Request,res:Response)=>{
     }
 });
 //user 삭제
-router.delete('/',async(req:Request,res:Response)=>{
+router.delete('/',verifyToken,async(req:Request,res:Response)=>{
     try{
         const {userEmail} = req.body;
         await UserModel.deleteUser(userEmail);
@@ -129,9 +129,9 @@ router.post('/jwt/login',async(req:Request,res:Response)=>{
                 nickname: userdata.nickname,
                 loginTime: new Date().toISOString()                
             }, 'secret', { expiresIn: '30m' });
-            console.log(userEmail,' 로그인');
+            console.log(userEmail,'님 로그인');
             res.status(200).json({
-                message: `${userEmail}`+'로그인',
+                message: `${userEmail}`+'님 로그인',
                 token: token
             });
         }else{
